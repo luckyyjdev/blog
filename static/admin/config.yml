@@ -3,7 +3,7 @@
 backend:
   name: github
   repo: luckyyjdev/blog
-  branch: main
+  branch: master
   base_url: https://sveltia-cms-auth.1918176773.workers.dev
 
 media_folder: /static/images
