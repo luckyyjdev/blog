@@ -1,4 +1,4 @@
-baseURL = "/"
+baseURL = "https://www.luckyyj.eu.org/"
 locale = "zh-cn"
 title = "鳄鱼的小站"
 theme = "PaperMod"
@@ -6,9 +6,11 @@ theme = "PaperMod"
 [params]
   author = "Luckyyj"
   description = "个人技术博客"
+  keywords = ["技术博客", "程序员", "VRChat", "Hugo", "前端开发"]
   defaultTheme = "auto"
   ShowShareButtons = false
   ShowReadingTime = true
+  ShowWordCount = true
   ShowPostNavLinks = true
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
@@ -69,6 +71,12 @@ theme = "PaperMod"
   name = "归档"
   url = "/archives/"
   weight = 20
+
+[[menu.main]]
+  identifier = "tags"
+  name = "标签"
+  url = "/tags/"
+  weight = 15
 
 [[menu.main]]
   identifier = "about"
