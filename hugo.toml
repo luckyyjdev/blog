@@ -17,8 +17,8 @@ theme = "PaperMod"
   comments = false
 
   [params.homeInfoParams]
-    Title = "欢迎来到我的博客"
-    Content = "记录技术、分享生活\n\n🚧 博客施工中，更多内容敬请期待！"
+    Title = "欢迎来到鳄鱼的小站"
+    Content = "记录技术、分享生活\n\n🚧 博客施工中，敬请期待！"
 
   [[params.socialIcons]]
     name = "github"
@@ -46,6 +46,9 @@ theme = "PaperMod"
     favicon = "/favicon.ico"
 
 [markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
   [markup.highlight]
     codeFences = true
     guessSyntax = true
