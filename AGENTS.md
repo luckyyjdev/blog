@@ -28,6 +28,14 @@ summary = "One-line summary"
 +++
 ```
 
+## Sveltia CMS
+
+- Admin interface at `/admin/` (via `static/admin/index.html` + `static/admin/config.yml`)
+- Uses the CDN version of Sveltia CMS (loaded from `unpkg.com`), no npm install needed
+- Posts use `format: toml-frontmatter` — front matter is TOML (`+++`)
+- **Authentication**: For local dev, use the local workflow (no OAuth). For production, deploy a GitHub OAuth proxy (e.g., Cloudflare Worker).
+- Media uploads go to `static/images/`, served at `/images/`.
+
 ## Key Conventions
 
 - Content language is Chinese; write post content in `zh-cn`.

@@ -1,21 +1,30 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
 backend:
   name: github
   repo: luckyyjdev/blog
-  branch: master
+  branch: main
+  base_url: https://sveltia-cms-auth.1918176773.workers.dev
 
-media_folder: "static/images"
-public_folder: "/images"
+media_folder: /static/images
+public_folder: /images
+
+locale: "zh-CN"
 
 collections:
-  - name: "posts"
-    label: "文章 (Posts)"
-    folder: "content/posts"
+  - name: posts
+    label: 文章
+    label_singular: 文章
+    folder: /content/posts
     create: true
-    path: "{{slug}}/index"
-    media_folder: ""
-    public_folder: ""
+    format: toml-frontmatter
+    extension: md
+    slug: "{{slug}}"
     fields:
-      - { label: "标题 (Title)", name: "title", widget: "string" }
-      - { label: "发布时间 (Date)", name: "date", widget: "datetime" }
-      - { label: "草稿 (Draft)", name: "draft", widget: "boolean", default: true }
-      - { label: "正文内容 (Body)", name: "body", widget: "markdown" }
+      - { label: 标题, name: title, widget: string }
+      - { label: 发布日期, name: date, widget: datetime, type: date }
+      - { label: 草稿, name: draft, widget: boolean, default: true }
+      - { label: 标签, name: tags, widget: list }
+      - { label: 分类, name: categories, widget: list }
+      - { label: 摘要, name: summary, widget: text, required: false }
+      - { label: 正文, name: body, widget: markdown }
