@@ -1,6 +1,6 @@
 baseURL = "/"
 locale = "zh-cn"
-title = "我的博客"
+title = "鳄鱼的小站"
 theme = "PaperMod"
 
 [params]
