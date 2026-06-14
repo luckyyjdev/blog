@@ -15,10 +15,11 @@ summary = "从零搭建 Hugo 博客并部署到 Cloudflare Pages 的完整流程
 
 ### 安装 Hugo
 
-macOS 上使用 Homebrew 安装：
+Linux 上下载 Hugo 二进制文件：
 
 ```bash
-brew install hugo
+wget https://github.com/gohugoio/hugo/releases/download/v0.163.1/hugo_extended_0.163.1_linux-amd64.deb
+sudo dpkg -i hugo_extended_0.163.1_linux-amd64.deb
 ```
 
 安装完成后验证：
