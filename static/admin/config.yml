@@ -1,0 +1,21 @@
+backend:
+  name: github
+  repo: luckyyjdev/blog
+  branch: master
+
+media_folder: "static/images"
+public_folder: "/images"
+
+collections:
+  - name: "posts"
+    label: "文章 (Posts)"
+    folder: "content/posts"
+    create: true
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    fields:
+      - { label: "标题 (Title)", name: "title", widget: "string" }
+      - { label: "发布时间 (Date)", name: "date", widget: "datetime" }
+      - { label: "草稿 (Draft)", name: "draft", widget: "boolean", default: true }
+      - { label: "正文内容 (Body)", name: "body", widget: "markdown" }
