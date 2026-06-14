@@ -1,0 +1,52 @@
+baseURL = "/"
+locale = "zh-cn"
+title = "我的博客"
+theme = "PaperMod"
+
+[params]
+  author = "Luckyyj"
+  description = "个人技术博客"
+  defaultTheme = "auto"
+  ShowShareButtons = false
+  ShowReadingTime = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowToc = true
+  TocOpen = false
+  comments = false
+
+  [params.homeInfoParams]
+    Title = "欢迎来到我的博客"
+    Content = "记录技术、分享生活"
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/luckyyj"
+
+  [[params.socialIcons]]
+    name = "twitter"
+    url = "https://twitter.com/luckyyj"
+
+  [params.cover]
+    hidden = false
+    hiddenInList = false
+    hiddenInSingle = false
+
+  [params.editPost]
+    URL = ""
+    Text = "编辑本文"
+    appendFilePath = true
+
+  [params.assets]
+    favicon = "/favicon.ico"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    style = "monokai"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
