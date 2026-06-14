@@ -3,7 +3,7 @@ title: "关于"
 layout: "about"
 ---
 
-<img src="/VRChat_avatar.png" width="200" alt="VRChat">
+<img src="/VRChat_avatar.png" width="120" alt="VRChat">
 
 记录。
 
