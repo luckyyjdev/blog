@@ -9,7 +9,7 @@ summary = "从零搭建 Hugo 博客并部署到 Cloudflare Pages 的完整流程
 
 ## 前言
 
-搭建个人博客一直是我想做的事情。经过对比Hexo、Hugo等主流静态博客框架后，我选择了 Hugo —— 以其极快的构建速度和灵活的配置脱颖而出。本文记录了从零开始搭建博客并部署到 Cloudflare Pages 的完整流程。
+搭建个人博客是我很久以前想做的事情。动态博客需要云服务器，价格比较高，每年还得续费，我选择白嫖Cloudflare Pages，经过对比Hexo、Hugo等主流静态博客框架后，我选择了 Hugo —— 以其极快的构建速度和灵活的配置脱颖而出。本文记录了从零开始搭建博客并部署到 Cloudflare Pages 的完整流程。
 
 ## 环境准备
 
@@ -155,13 +155,8 @@ git commit -m "新文章: article-title"
 git push
 ```
 
-推送后 Cloudflare Pages 自动构建部署，几分钟内即可在线访问。
+推送后 Cloudflare Pages 自动构建部署，很快就可在线访问。
 
-## 遇到的问题
-
-1. **子模块拉取**：克隆仓库时需要加 `--recurse-submodules`，否则主题目录为空
-2. **Hugo 版本**：Cloudflare Pages 支持的 Hugo 版本可能不是最新的，构建时注意选择兼容版本
-3. **中文路径**：Hugo 默认会对中文标题做 slug 处理，建议在 front matter 中显式设置 `slug`
 
 ## 总结
 

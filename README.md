@@ -1,6 +1,7 @@
 # 我的博客
 
 基于 [Hugo](https://gohugo.io/) 和 [PaperMod](https://github.com/adityatelange/hugo-PaperMod) 主题搭建的个人技术博客。
+访问地址：https://www.luckyyj.eu.org/
 
 ## 功能特点
 
