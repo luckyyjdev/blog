@@ -1,9 +1,9 @@
 +++
-title = "我的博客部署流程"
+title = "第一篇文章~博客部署流程"
 date = 2026-06-14
 draft = false
-tags = ["博客", "Hugo", "Cloudflare Pages", "部署"]
-categories = ["技术"]
+tags = [ "博客", "Hugo", "Cloudflare Pages", "部署" ]
+categories = [ "技术" ]
 summary = "从零搭建 Hugo 博客并部署到 Cloudflare Pages 的完整流程记录"
 +++
 
@@ -128,9 +128,11 @@ hugo
 2. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)，进入 Pages
 3. 点击 "Create a project"，选择 "Connect to Git"
 4. 选择 GitHub 仓库，配置构建设置：
-   - **Build command**: `hugo`
-   - **Build output directory**: `public`
-   - **Hugo version**: 选择最新版本
+
+- **Build command**: `hugo`
+- **Build output directory**: `public`
+- **Hugo version**: 选择最新版本
+
 5. 点击 "Save and Deploy"
 
 ### 自定义域名
@@ -157,7 +159,6 @@ git push
 ```
 
 推送后 Cloudflare Pages 自动构建部署，很快就可在线访问。
-
 
 ## 总结
 
