@@ -22,11 +22,11 @@ theme = "PaperMod"
 
   [[params.socialIcons]]
     name = "github"
-    url = "https://github.com/luckyyj"
+    url = "https://github.com/luckyyjdev"
 
   [[params.socialIcons]]
     name = "twitter"
-    url = "https://twitter.com/luckyyj"
+    url = "https://twitter.com/cookie_yyj"
 
   [params.cover]
     hidden = false
