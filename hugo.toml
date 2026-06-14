@@ -25,8 +25,8 @@ theme = "PaperMod"
     url = "https://github.com/luckyyjdev"
 
   [[params.socialIcons]]
-    name = "twitter"
-    url = "https://twitter.com/cookie_yyj"
+    name = "x"
+    url = "https://x.com/cookie_yyj"
 
   [[params.socialIcons]]
     name = "vrchat"
