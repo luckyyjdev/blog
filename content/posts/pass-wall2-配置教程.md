@@ -1,7 +1,7 @@
 +++
 title = "Pass Wall2  配置教程"
 date = 2026-06-15
-draft = true
+draft = false
 tags = [ "Pass Wall2", "技术" ]
 categories = [ "技术" ]
 summary = "Pass Wall2  配置教程"
@@ -34,7 +34,6 @@ summary = "Pass Wall2  配置教程"
 - **域名**：（填入下方内容，用于过滤广告）
 Plaintextgeosite:category-ads-all
 
-
 ### 2. 添加 Direct（直连/绕过）规则
 
 - **备注**：`Direct`
@@ -43,11 +42,9 @@ Plaintextgeosite:category-ads-all
 Plaintextxn--ngstr-lra8j.com
 geosite:private
 geosite:cn
-
 - **IP**：（填入下方内容，主要包含内网及国内 IP 范围）
 Plaintextgeoip:private
 geoip:cn
-
 
 ### 3. 添加 Proxy（国外代理）规则
 
@@ -55,7 +52,6 @@ geoip:cn
 - **网络**：`TCP UDP`
 - **域名**：（填入下方内容，用于国外域名走代理）
 Plaintextgeosite:geolocation-!cn
-
 
 ### 💡 规则释义参考表
 
@@ -85,9 +81,11 @@ Plaintextgeosite:geolocation-!cn
 - **类型**：`Xray`
 - **协议名称**：`分流`
 - **分流规则对应设置**：
+
     1. 将 **Reject** 设置为：`黑洞(丢弃)`
     2. 将 **Direct** 设置为：`直连(绕过)`
     3. 将 **Proxy** 设置为：`默认(代理)`
+
 - **默认（\*默认）**：按照您自己的实际需求，**选择一个您平时最常用的、能正常上网海淘的节点** 。⚠️ 注：此处不要留空，必须选择一个有效的落地代理节点 。
 - **域名解析策略**：设置为 `AsIs`（即跳过 IP 匹配，只匹配域名，极大提升解析和分流效率） 。
 - **域名匹配算法**：保持默认的 `hybrid` 。
