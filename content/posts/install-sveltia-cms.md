@@ -2,8 +2,8 @@
 title = "给 Hugo 博客装上 Sveltia CMS：一个免费的开源后台"
 date = 2026-06-14
 draft = false
-tags = ["Hugo", "Sveltia CMS", "Cloudflare", "CMS"]
-categories = ["技术"]
+tags = [ "Hugo", "Sveltia CMS", "Cloudflare", "CMS" ]
+categories = [ "技术" ]
 summary = "在 Hugo 博客上免费安装 Sveltia CMS，并通过 Cloudflare Workers 配置 GitHub OAuth 认证的完整记录"
 +++
 
@@ -48,7 +48,7 @@ backend:
   name: github
   repo: luckyyjdev/blog
   branch: master
-  base_url: https://sveltia-cms-auth.1918176773.workers.dev
+  base_url: https://sveltia-cms-auth.xxxx.workers.dev
 
 media_folder: /static/images
 public_folder: /images
@@ -56,7 +56,7 @@ public_folder: /images
 locale: "zh-CN"
 
 collections:
-  - name: posts
+    - name: posts
     label: 文章
     label_singular: 文章
     folder: /content/posts
@@ -65,20 +65,20 @@ collections:
     extension: md
     slug: "{{slug}}"
     fields:
-      - { label: 标题, name: title, widget: string }
-      - { label: 发布日期, name: date, widget: datetime, type: date }
-      - { label: 草稿, name: draft, widget: boolean, default: true }
-      - { label: 标签, name: tags, widget: list }
-      - { label: 分类, name: categories, widget: list }
-      - { label: 摘要, name: summary, widget: text, required: false }
-      - { label: 正文, name: body, widget: markdown }
+            - { label: 标题, name: title, widget: string }
+            - { label: 发布日期, name: date, widget: datetime, type: date }
+            - { label: 草稿, name: draft, widget: boolean, default: true }
+            - { label: 标签, name: tags, widget: list }
+            - { label: 分类, name: categories, widget: list }
+            - { label: 摘要, name: summary, widget: text, required: false }
+            - { label: 正文, name: body, widget: markdown }
 ```
 
 这里有几个关键点：
 
-- **`format: toml-frontmatter`**：因为我的 Hugo 文章使用 TOML 格式前置元数据（`+++`），需要显式指定
-- **`locale: "zh-CN"`**：让管理界面显示中文
-- **`media_folder` 和 `public_folder`**：图片上传到 `static/images/`，通过 `/images/` 路径访问
+- \*\*`format: toml-frontmatter`\*\*：因为我的 Hugo 文章使用 TOML 格式前置元数据（`+++`），需要显式指定
+- \*\*`locale: "zh-CN"`\*\*：让管理界面显示中文
+- \*\*`media_folder` 和 `public_folder`\*\*：图片上传到 `static/images/`，通过 `/images/` 路径访问
 
 ## 配置 GitHub OAuth 认证
 
@@ -105,7 +105,7 @@ collections:
 在 Cloudflare Dashboard → Workers → `sveltia-cms-auth` → Settings → Variables 中添加：
 
 | 变量 | 值 |
-|------|-----|
+| --- | --- |
 | `GITHUB_CLIENT_ID` | 上一步的 Client ID |
 | `GITHUB_CLIENT_SECRET` | 上一步的 Client Secret（记得点 Encrypt） |
 | `ALLOWED_DOMAINS` | `www.luckyyj.eu.org` |
@@ -125,12 +125,6 @@ backend:
 ### 5. 提交部署
 
 推送到 GitHub 后，Cloudflare Pages 自动重新构建。访问 `https://你的域名/admin/` 即可看到登录界面，点击 GitHub 登录完成认证。
-
-## 踩坑记录
-
-### 分支名不一致
-
-GitHub 仓库的默认分支是 `master`，但我的配置里写成了 `main`，导致认证成功后提示找不到仓库。改成 `master` 就好了。
 
 ### 页脚加管理入口
 
@@ -156,6 +150,8 @@ GitHub 仓库的默认分支是 `master`，但我的配置里写成了 `main`，
 - 上传图片
 - 设置标签和分类
 - 管理草稿和发布状态
+
+![](/images/QQ_1781446203233.png "界面")
 
 所有修改会自动提交到 GitHub 仓库，Cloudflare Pages 检测到变更后自动构建部署，一整套流程完全免费。
 
