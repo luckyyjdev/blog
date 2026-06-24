@@ -2,6 +2,7 @@ baseURL = "https://www.luckyyj.eu.org/"
 locale = "zh-cn"
 title = "鳄鱼的小站"
 theme = "PaperMod"
+enableRobotsTXT = true
 
 [params]
   author = "Luckyyj"
@@ -46,6 +47,8 @@ theme = "PaperMod"
 
   [params.assets]
     favicon = "/favicon.ico"
+
+  env = "production"
 
 [markup]
   [markup.goldmark]
