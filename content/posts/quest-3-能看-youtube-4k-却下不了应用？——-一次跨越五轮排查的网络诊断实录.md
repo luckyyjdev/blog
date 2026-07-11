@@ -1,7 +1,7 @@
 +++
 title = "Quest 3 能看 YouTube 4K 却下不了应用？—— 一次跨越五轮排查的网络诊断实录"
 date = 2026-07-11
-draft = true
+draft = false
 tags = [ "网络", "openwrt", "openclash", "quest" ]
 categories = [ "技术" ]
 summary = ""
@@ -31,15 +31,11 @@ OpenWrt 旁路由 (192.168.28.2)  ← 跑 OpenClash 做代理
 
 
 这是国内很常见的「旁路由」方案：主路由负责 WiFi 和 DHCP，OpenWrt 旁路由专门跑代理，客户端把网关指向旁路由就能走代理。
-
-
-**症状**：Quest 3 上 YouTube 能流畅看 4K，但应用商店下载任何应用都是几 KB/s 然后完全不动。
+    **症状**：Quest 3 上 YouTube 能流畅看 4K，但应用商店下载任何应用都是几 KB/s 然后完全不动。
 
 
 这个症状很有意思——能看 4K 说明带宽和代理本身没问题，那为什么下载不行？带着这个疑问开始排查。
-
-
----
+    ---
 
 
 ## 第一轮：ADB 上手，DNS 污染现形
@@ -88,22 +84,16 @@ tcp  192.168.28.7:xxx  104.244.42.197:443  TIME_WAIT
 
 
 Quest 3 在疯狂连接这个错误的 Twitter IP，TLS 握手失败（证书对不上），断开重试，再失败……死循环。这就是下载卡死的直接原因。
-
-
-**为什么 YouTube 没事？** 因为 `googlevideo.com` 在 OpenClash 的规则列表里，走代理 DNS 解析（干净）；而 Meta 的 CDN 域名没被规则覆盖，走直连 DNS，被 GFW 污染。
+    **为什么 YouTube 没事？** 因为 `googlevideo.com` 在 OpenClash 的规则列表里，走代理 DNS 解析（干净）；而 Meta 的 CDN 域名没被规则覆盖，走直连 DNS，被 GFW 污染。
 
 
 ### 第一次修复
-
-
-1. OpenClash 添加 Meta 域名代理规则：`oculus.com`、`fbcdn.net`、`facebook.com`、`meta.com` 等
+    1. OpenClash 添加 Meta 域名代理规则：`oculus.com`、`fbcdn.net`、`facebook.com`、`meta.com` 等
 2. 红米路由 DHCP 移除 `114.114.114.114`，DNS 只留 `192.168.28.2`
 
 
 改完重启 Quest WiFi，满心欢喜地验证——
-
-
----
+    ---
 
 
 ## 第二轮：规则加了，还是污染
@@ -149,9 +139,7 @@ Address: 198.18.0.17   ← fake-ip！对了！
 
 
 电脑端 fake-ip 完全正常。这次总该行了吧——
-
-
----
+    ---
 
 
 ## 第三轮：fake-ip 生效了，Quest 却还异常
@@ -176,21 +164,15 @@ graphene.oculus.com  → unknown host     ← 还是失败
 ```
 DnsAddresses: [ /fe80::46f7:70ff:febd:c40%wlan0, /192.168.28.2 ]
 ```
-
-
-**IPv6 链路本地地址 `fe80::46f7:70ff:febd:c40` 排在第一位**。Android 的 DNS 解析器会优先用排在前面的 DNS 服务器。也就是说，Quest 的 DNS 查询优先发给了这个 IPv6 地址，而不是 IPv4 的 192.168.28.2。
+    **IPv6 链路本地地址 `fe80::46f7:70ff:febd:c40` 排在第一位**。Android 的 DNS 解析器会优先用排在前面的 DNS 服务器。也就是说，Quest 的 DNS 查询优先发给了这个 IPv6 地址，而不是 IPv4 的 192.168.28.2。
 
 
 而 OpenClash 的 fake-ip 只接管了 IPv4 DNS。IPv6 DNS 查询绕过了 OpenClash，直连出去被 GFW 污染。
 
 
 证据：连接里同时存在 `198.18.0.17`（fake-ip，走代理✅）和 `174.132.167.252`（污染✗），取决于这次查询走了 IPv4 还是 IPv6。
-
-
-**根因似乎找到了**：Quest 优先用 IPv6 DNS，绕过了 fake-ip。那去掉这个 IPv6 DNS 不就行了？
-
-
----
+    **根因似乎找到了**：Quest 优先用 IPv6 DNS，绕过了 fake-ip。那去掉这个 IPv6 DNS 不就行了？
+    ---
 
 
 ## 第四轮：禁了 IPv6，fe80 却阴魂不散
@@ -228,9 +210,7 @@ $ arp -a | grep "192.168.28.[12]"
 192.168.28.1    44-f7-70-bd-0c-40    ← 红米主路由！匹配！
 192.168.28.2    52-54-00-f8-c6-ff    ← OpenWrt，不匹配
 ```
-
-
-**这个 fe80:: 是红米主路由的，不是 OpenWrt 的！**
+    **这个 fe80:: 是红米主路由的，不是 OpenWrt 的！**
 
 
 前面在 OpenWrt 上怎么折腾都没用，因为发 IPv6 RA（路由通告）的根本不是 OpenWrt，是红米。红米通过 RA 把自己的 fe80 地址作为 IPv6 DNS 通告给局域网所有设备，Quest 收到后优先使用，绕过了 OpenWrt 的 fake-ip。
@@ -243,17 +223,13 @@ $ arp -a | grep "192.168.28.[12]"
 
 
 想让 Quest 不用红米的 IPv6 DNS，有几条路：
-
-
-1. **红米 IPv6 DNS 改填 OpenWrt 的 fe80**——但这样其他设备也会拿到 fake-ip，影响面大
+    1. **红米 IPv6 DNS 改填 OpenWrt 的 fe80**——但这样其他设备也会拿到 fake-ip，影响面大
 2. **关闭红米 IPv6 总开关**——简单彻底，但全网没 IPv6
 3. **设备端禁 IPv6**——Quest 没权限，做不到
 
 
 权衡后选择了方案 2：关红米 IPv6 总开关。IPv4 上网和代理完全不受影响，只是没了 IPv6 而已，对日常使用几乎无感。
-
-
----
+    ---
 
 
 ## 第五轮：关红米 IPv6，彻底解决
@@ -290,9 +266,7 @@ tcp  192.168.28.7:xxx  198.18.0.19:443  ESTABLISHED
 
 
 打开 Quest 商店，下载飞快，问题彻底解决。
-
-
----
+    ---
 
 
 ## 原理深挖：为什么旁路由挡不住主路由的 RA
@@ -310,9 +284,7 @@ tcp  192.168.28.7:xxx  198.18.0.19:443  ESTABLISHED
 
 
 但 WiFi 的**物理接入**还是红米（SSID 是红米的）。Quest、红米、OpenWrt 三者处在同一个二层网段。
-
-
-**网关是三层概念**，控制的是「IP 包往哪转发」。**IPv6 RA 是二层组播**（目标地址 ff02::1，所有节点），红米定期在局域网里广播，同网段所有设备直接收到，根本不经过网关。
+    **网关是三层概念**，控制的是「IP 包往哪转发」。**IPv6 RA 是二层组播**（目标地址 ff02::1，所有节点），红米定期在局域网里广播，同网段所有设备直接收到，根本不经过网关。
 
 
 打个比方：你跟私人秘书说「以后我的信都你来转交」（设网关=OpenWrt），但小区广播站还是对着整个小区大喇叭喊（RA 二层组播），你在家直接听到了广播，秘书压根没经手。要让广播不影响你，要么让广播站闭嘴（关红米 IPv6），要么戴耳塞（设备端禁 IPv6）。
@@ -337,9 +309,7 @@ tcp  192.168.28.7:xxx  198.18.0.19:443  ESTABLISHED
 
 
 因为这些操作只影响 OpenWrt 自己发不发 RA，不影响红米。红米的 RA 照样二层组播到 Quest。
-
-
----
+    ---
 
 
 ## 排查方法论总结
@@ -360,9 +330,7 @@ nslookup graph.oculus.com 192.168.28.2
 # 设备上解析
 adb shell ping -c1 graph.oculus.com
 ```
-
-
-- 两者结果一致 → OpenClash 配置有问题
+    - 两者结果一致 → OpenClash 配置有问题
 - 电脑对、设备错 → 设备的 DNS 查询没走 OpenClash（被抢答/绕过/缓存）
 
 
@@ -407,9 +375,7 @@ adb shell cmd wifi set-wifi-enabled enabled
 
 
 改完路由器 DHCP 后，用这个让设备重新获取配置，不用手动在头显里操作。
-
-
----
+    ---
 
 
 ## 最终生效的完整修复
@@ -427,9 +393,7 @@ adb shell cmd wifi set-wifi-enabled enabled
 
 
 前 3 步是「让 OpenClash fake-ip 正确工作」，第 4 步是「让设备真正用上 fake-ip 而不被 IPv6 DNS 绕过」。第 4 步是最后一个、也是最隐蔽的坑。
-
-
----
+    ---
 
 
 ## 写在最后
