@@ -21,7 +21,7 @@ enableRobotsTXT = true
 
   [params.homeInfoParams]
     Title = "欢迎来到鳄鱼的小站"
-    Content = "记录技术、分享生活\n\n🚧 博客施工中，敬请期待！"
+    Content = "记录技术、分享生活"
 
   [[params.socialIcons]]
     name = "github"
