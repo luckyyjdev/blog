@@ -3,6 +3,7 @@ locale = "zh-cn"
 title = "鳄鱼的小站"
 theme = "PaperMod"
 enableRobotsTXT = true
+hasCJKLanguage = true
 
 [params]
   author = "Luckyyj"
