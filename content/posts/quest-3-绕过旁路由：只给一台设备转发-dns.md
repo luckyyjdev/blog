@@ -1,23 +1,21 @@
 +++
-title = "Quest 3 绕过旁路由：只给一台设备转发 DNS"
+title = "如何才能在不关闭IPV6的情况下，让Qust3正常的科学上网"
 date = 2026-11-08
-draft = false
+draft = true
 tags = [ "网络", "openwrt", "openclash", "quest", "dns" ]
 categories = [ "技术" ]
 summary = "重新打开 IPv6 后，Quest 3 的 DNS 又绕过了旁路由。这次不改全家网络，只在主路由上用一条防火墙规则，把这一台设备的 IPv6 DNS 转发给 OpenClash。"
 +++
 
-# Quest 3 绕过旁路由：只给一台设备转发 DNS
+#### Quest 3 绕过旁路由：只给一台设备转发 DNS
 
-之前为了让 Quest 3 正常使用旁路由上的 OpenClash，我直接把主路由的 IPv6 关了。办法有效，但不太合理：家里这么多设备，没必要因为一个头显让全家都放弃 IPv6。
+之前为了让 Quest 3 正常使用旁路由上的 OpenClash，我直接把主路由的 IPv6 关了。办法有效，但不太合理：家里这么多设备，没必要因为一个头显让整个网络都放弃 IPv6。
 
 所以这次我把 IPv6 重新打开，准备只解决 Quest 3 的问题。
 
+[前景提要：Quest 3 能看 YouTube 4K 却下不了应用？—— 一次排查网络诊断记录](https://www.luckyyj.eu.org/posts/quest-3-%E8%83%BD%E7%9C%8B-youtube-4k-%E5%8D%B4%E4%B8%8B%E4%B8%8D%E4%BA%86%E5%BA%94%E7%94%A8-%E4%B8%80%E6%AC%A1%E8%B7%A8%E8%B6%8A%E4%BA%94%E8%BD%AE%E6%8E%92%E6%9F%A5%E7%9A%84%E7%BD%91%E7%BB%9C%E8%AF%8A%E6%96%AD%E5%AE%9E%E5%BD%95/)
+
 起因很简单。我在测试 DNS 时发现，同一个域名直接向旁路由查询，返回的是 OpenClash 的 Fake-IP（198.18.0.62）；但 Quest 3 自己解析出来的却是正常公网 IP。我明明已经给 Quest 手动设置了旁路由 DNS，它为什么还会跑去问主路由？
-
-折腾一圈后找到原因：问题不在 OpenClash，而是 IPv6 又给 Quest 开了一条新网络通道。之前关于 Quest 3 网络问题的排查记录，算是这次的前情提要。
-
-<!--more-->
 
 ## Quest 的 IPv6 配置从哪来
 
